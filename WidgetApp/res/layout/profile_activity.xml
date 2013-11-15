@@ -14,16 +14,27 @@
         android:text="Create" />
 
     <Spinner
-        android:id="@+id/fromSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp" />
-
-    <Spinner
         android:id="@+id/toSpinner"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/fromSpinner"
         android:layout_marginTop="19dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Select Currencies"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/fromSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" />
 
 </RelativeLayout>

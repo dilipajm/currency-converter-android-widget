@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RemoteViews;
 import android.widget.Spinner;
 
 
@@ -17,12 +22,28 @@ public class Profile_View extends Activity {
 
 	Button updateBtn;
 	
+	private Profile_View context;
+	private int widgetId;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.profile_activity);
 
+		setResult(RESULT_CANCELED);
+		
+		context = this;
+		
+		Bundle extras = getIntent().getExtras();
+		if(extras!=null){
+			widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+		}
+		
+		AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_main);
+		
+		
 		fromSpinner = (Spinner)findViewById(R.id.fromSpinner);
 		fromSpinner.setPrompt("From");
 		
@@ -50,6 +71,25 @@ public class Profile_View extends Activity {
         // attaching data adapter to spinner
         fromSpinner.setAdapter(dataAdapter);
         toSpinner.setAdapter(dataAdapter);
+        
+        fromSpinner.setSelection(0);
+        toSpinner.setSelection(1);
+        
+        
+	}
+	
+	public void updateUserProfile(View view){
+		
+		SharedPreferences.Editor prefs = getSharedPreferences("currency", 0).edit();
+        prefs.putString("from", fromSpinner.getSelectedItem().toString());
+        prefs.putString("to", toSpinner.getSelectedItem().toString());
+		prefs.commit();
+				 
+		 Intent resultValue = new Intent();
+		 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+		 setResult(RESULT_OK, resultValue);
+		 finish();
+		 
 	}
 
 }

@@ -16,6 +16,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
@@ -100,7 +101,11 @@ public class MainActivity extends AppWidgetProvider {
 			myIntent = intent;
 
 			//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
-			getLatestData(remoteViews,"USD", "INR");
+			
+			SharedPreferences prefs = context.getSharedPreferences("currency", 0);
+            String from = prefs.getString("from","USD");
+            String to = prefs.getString("to","INR");
+			getLatestData(remoteViews,from, to);
 		}
 		/*else if (SHARE_CLICKED.equals(intent.getAction())) {
         	SharedPreferences prefs = context.getSharedPreferences("data", Context.MODE_WORLD_WRITEABLE);
