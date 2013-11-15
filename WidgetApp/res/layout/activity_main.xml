@@ -11,7 +11,7 @@
         android:id="@+id/copyBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Copy" />
+        android:text="Refresh" />
 
     <TextView
         android:id="@+id/update"
@@ -22,14 +22,6 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="4dip"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Welcome to Wise Thoughts Widget." />
-
-    <Button
-        android:id="@+id/shareBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/update"
-        android:text="Share" />
+        android:text="Currency converter" />
 
 </RelativeLayout> 
