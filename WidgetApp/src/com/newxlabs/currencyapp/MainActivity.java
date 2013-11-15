@@ -61,6 +61,14 @@ public class MainActivity extends AppWidgetProvider {
 			//getLatestData(remoteViews,"USD", "INR");
 
 			//copy button
+			
+			//**************
+			/*Intent clickIntent = new Intent(context, MainActivity.class);
+			clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
+			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
+			*///***************
+			
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
 
 
@@ -166,7 +174,7 @@ startActivity(intent);
 		 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
 		ComponentName thisWidget = new ComponentName(myContext, MainActivity.class);
 
-	    appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
+	    //appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 	    
 	    remoteViews.setTextViewText(R.id.update, "Fetching data...");
 		appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
@@ -231,6 +239,7 @@ startActivity(intent);
 
 				views.setTextViewText(R.id.update, str);
 
+				//appWidgetManager.updateAppWidget(appWidgetId, views);
 				appWidgetManager.updateAppWidget(watchWidget, views);
 
 			} catch (Exception e) {

@@ -24,6 +24,8 @@ public class Profile_View extends Activity {
 	
 	private Profile_View context;
 	private int widgetId;
+	AppWidgetManager widgetManager;
+	RemoteViews views;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,8 @@ public class Profile_View extends Activity {
 			widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
 		
-		AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_main);
+		widgetManager = AppWidgetManager.getInstance(context);
+		views = new RemoteViews(context.getPackageName(), R.layout.activity_main);
 		
 		
 		fromSpinner = (Spinner)findViewById(R.id.fromSpinner);
@@ -85,10 +87,16 @@ public class Profile_View extends Activity {
         prefs.putString("to", toSpinner.getSelectedItem().toString());
 		prefs.commit();
 				 
+		
+		
+		
 		 Intent resultValue = new Intent();
 		 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 		 setResult(RESULT_OK, resultValue);
 		 finish();
+		 
+		 //widgetManager.updateAppWidget(widgetId, views);
+			
 		 
 	}
 
