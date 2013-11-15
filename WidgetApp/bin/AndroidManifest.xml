@@ -20,6 +20,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
+        
+        <activity android:name=".Profile_View"
+               android:label="Widget Config">
+         <intent-filter>
+             <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+         </intent-filter>
+     </activity>
+        
     </application>
 
 </manifest>
