@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <color name="white">#ffffff</color>
+   <color name="black">#000000</color>
+   <!-- <color name="color_nav_bg">#7D6867</color> -->
+   <!-- <color name="color_nav_bg">#50b3fa</color> -->
+   <color name="color_nav_bg">#306CAB</color>
+   <color name="color_nav_bg_blue">#50b3fa</color>
+   <color name="color_bg">#FDFFF2</color>
+   <color name="content_text_color">#555555</color>
+   <color name="text_brown">#7C6965</color>
+   <color name="row_unread">#54C571</color>
+   <color name="row_read">#FFFFFF</color>
+</resources>
