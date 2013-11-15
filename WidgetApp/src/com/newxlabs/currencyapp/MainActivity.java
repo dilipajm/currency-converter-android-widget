@@ -1,44 +1,25 @@
 package com.newxlabs.currencyapp;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.webkit.WebView.FindListener;
+import android.widget.ProgressBar;
 import android.widget.RemoteViews;
-import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
@@ -48,15 +29,14 @@ public class MainActivity extends AppWidgetProvider {
 	private static final String SHARE_CLICKED    = "automaticWidgetShareButtonClick";
 	public Context myContext;
 	public Intent myIntent;
-
+	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-
+		
 		//SharedPreferences.Editor prefs = context.getSharedPreferences("data", Context.MODE_WORLD_WRITEABLE).edit();
-
 
 		ComponentName thisWidget = new ComponentName(context, MainActivity.class);
 
@@ -69,7 +49,7 @@ public class MainActivity extends AppWidgetProvider {
 
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.activity_main);
 			//remoteViews.setTextViewText(R.id.update, String.valueOf(number));
-			remoteViews.setTextViewText(R.id.update, "Loading..");
+			//remoteViews.setTextViewText(R.id.update, "Loading..");
 
 			Intent intent = new Intent(context, MainActivity.class);
 			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -77,6 +57,7 @@ public class MainActivity extends AppWidgetProvider {
 
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
+			//getLatestData(remoteViews,"USD", "INR");
 
 			//copy button
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
@@ -118,7 +99,7 @@ public class MainActivity extends AppWidgetProvider {
 			myContext = context;
 			myIntent = intent;
 
-			Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
 			getLatestData(remoteViews,"USD", "INR");
 		}
 		/*else if (SHARE_CLICKED.equals(intent.getAction())) {
@@ -175,14 +156,22 @@ startActivity(intent);
 	}
 
 
-	public void getLatestData(RemoteViews views,String from, String to){
+	public void getLatestData(RemoteViews remoteViews,String from, String to){
 
-		//String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-		String url = "http://rate-exchange.appspot.com/currency?from=USD&to=INR";
+		 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
+		ComponentName thisWidget = new ComponentName(myContext, MainActivity.class);
+
+	    appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
+	    
+	    remoteViews.setTextViewText(R.id.update, "Fetching data...");
+		appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
+		
+		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
+		//String url = "http://rate-exchange.appspot.com/currency?from=USD&to=INR";
 		//Log.d("ServerCommunication", "ServerCommunication onPostExecute ServerAsycTask: "+urls);
-		Toast.makeText(myContext, "1- "+url, Toast.LENGTH_LONG).show();
+		//Toast.makeText(myContext, "1- "+url, Toast.LENGTH_LONG).show();
 
-		new ServerAsycTask(views,url).execute(url);
+		new ServerAsycTask(remoteViews,url).execute(url);
 		//new ServerAsycTask().execute(url);
 	}
 
@@ -221,10 +210,10 @@ startActivity(intent);
 		@Override
 		protected void onPostExecute(String result) {
 
-			Log.d("ServerCommunication", "ServerCommunication onPostExecute ServerAsycTask: "+result);
+			//Log.d("ServerCommunication", "ServerCommunication onPostExecute ServerAsycTask: "+result);
 
 
-			Toast.makeText(myContext, "result1: "+result+" for url: "+this.url, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(myContext, "result1: "+result+" for url: "+this.url, Toast.LENGTH_SHORT).show();
 
 			try {
 				JSONObject obj = new JSONObject(result);
