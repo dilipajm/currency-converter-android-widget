@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.text.format.DateFormat;
 import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
@@ -61,8 +62,9 @@ public class MainActivity extends AppWidgetProvider {
 
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent2);
-			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
-			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
+			remoteViews.setOnClickPendingIntent(R.id.lastUpdated, pendingIntent2);
+			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
+			remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
 
 			//getLatestData(remoteViews,"USD", "INR");
 
@@ -91,7 +93,7 @@ public class MainActivity extends AppWidgetProvider {
 		super.onReceive(context, intent);
 
 		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -99);
-		Toast.makeText(context, "onReceive- "+widId, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(context, "onReceive- "+widId, Toast.LENGTH_SHORT).show();
 
 		RemoteViews remoteViews;
 		//ComponentName watchWidget;
@@ -206,8 +208,10 @@ public class MainActivity extends AppWidgetProvider {
 
 				//watchWidget = new ComponentName(myContext, MainActivity.class);
 
+				String date = (DateFormat.format("dd-MM-yyyy hh:mm:ss", new java.util.Date()).toString());
 				views.setTextViewText(R.id.update, str);
-
+				views.setTextViewText(R.id.lastUpdated, "Last Updated: "+date);
+				
 				appWidgetManager.updateAppWidget(this.widId, views);
 				//appWidgetManager.updateAppWidget(watchWidget, views);
 
