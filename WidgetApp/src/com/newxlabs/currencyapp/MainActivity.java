@@ -55,9 +55,15 @@ public class MainActivity extends AppWidgetProvider {
 			Intent intent = new Intent(context, MainActivity.class);
 			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 
+			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent, 0);
+			
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
+			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent2);
+			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
+			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
+			
 			//getLatestData(remoteViews,"USD", "INR");
 
 			//copy button
@@ -69,7 +75,7 @@ public class MainActivity extends AppWidgetProvider {
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
 			*///***************
 			
-			remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
+			
 
 
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -84,6 +90,24 @@ public class MainActivity extends AppWidgetProvider {
 		// TODO Auto-generated method stub
 		super.onReceive(context, intent);
 
+		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -99);
+		Toast.makeText(context, "onReceive- "+widId, Toast.LENGTH_SHORT).show();
+		
+		RemoteViews remoteViews;
+		//ComponentName watchWidget;
+
+		remoteViews = new RemoteViews(context.getPackageName(), R.layout.activity_main);
+		myContext = context;
+		myIntent = intent;
+
+		//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
+		
+		SharedPreferences prefs = context.getSharedPreferences(""+widId, -99);
+        String from = prefs.getString("from","USD");
+        String to = prefs.getString("to","INR");
+		getLatestData(remoteViews,from, to,widId);
+		
+		/*
 		if (COPY_CLICKED.equals(intent.getAction())) {
 
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -98,68 +122,18 @@ public class MainActivity extends AppWidgetProvider {
 
 			//appWidgetManager.updateAppWidget(watchWidget, remoteViews);
 
-			/*SharedPreferences prefs = context.getSharedPreferences("data", Context.MODE_WORLD_WRITEABLE);
-            String text = prefs.getString("thought", "Welcome to wise thoughts!")+" \nBy Wise Thought - Widget App";
-
-        	ClipboardManager clipboard = (ClipboardManager) context.getSystemService(context.CLIPBOARD_SERVICE);
-        	ClipData clip = ClipData.newPlainText("thought",text);
-        	clipboard.setPrimaryClip(clip);
-			 */
+			
 			myContext = context;
 			myIntent = intent;
 
-			//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
 			
 			SharedPreferences prefs = context.getSharedPreferences("currency", 0);
             String from = prefs.getString("from","USD");
             String to = prefs.getString("to","INR");
 			getLatestData(remoteViews,from, to);
 		}
-		/*else if (SHARE_CLICKED.equals(intent.getAction())) {
-        	SharedPreferences prefs = context.getSharedPreferences("data", Context.MODE_WORLD_WRITEABLE);
-    	    String text = prefs.getString("thought", "Welcome to wise thoughts!")+" \nBy Wise Thought - Widget App";
-
-
-    	    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-
-            RemoteViews remoteViews;
-            ComponentName watchWidget;
-
-            remoteViews = new RemoteViews(context.getPackageName(), R.layout.activity_main);
-            watchWidget = new ComponentName(context, MainActivity.class);
-
-            //remoteViews.setTextViewText(R.id.copyBtn, "TESTING");
-
-            //appWidgetManager.updateAppWidget(watchWidget, remoteViews);
-
-            //**************
-
-
-    	    Intent configIntent = new Intent(context, About_View.class);
-
-    	    PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
-
-    	    remoteViews.setOnClickPendingIntent(R.id.shareBtn, configPendingIntent);
-
-    	    ComponentName thisWidget = new ComponentName(context, MainActivity.class);
-
-    	    appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
-
-    	    /*
-		 * Intent intent = new Intent(Intent.ACTION_SEND);
-intent.setType("text/plain");
-intent.putExtra(android.content.Intent.EXTRA_TEXT, "News for you!");
-startActivity(intent);
-		 * */
-		/* Intent sendIntent = new Intent();
-        	sendIntent.setAction(Intent.ACTION_SEND);
-        	sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        	sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-        	sendIntent.setType("text/plain");
-        	context.startActivity(Intent.createChooser(sendIntent, context.getResources().getText(R.string.hello_world)));
-		 */
-		/*Toast.makeText(context, "This feature coming soon!", Toast.LENGTH_SHORT).show();
-         }*/
+		*/
 	}
 
 	protected PendingIntent getPendingSelfIntent(Context context, String action) {
@@ -169,33 +143,32 @@ startActivity(intent);
 	}
 
 
-	public void getLatestData(RemoteViews remoteViews,String from, String to){
+	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
 		 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
-		ComponentName thisWidget = new ComponentName(myContext, MainActivity.class);
+		//ComponentName thisWidget = new ComponentName(myContext, MainActivity.class);
 
 	    //appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 	    
 	    remoteViews.setTextViewText(R.id.update, "Fetching data...");
-		appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
+	    appWidgetManager.updateAppWidget(widId, remoteViews);
+		//appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 		
 		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-		//String url = "http://rate-exchange.appspot.com/currency?from=USD&to=INR";
-		//Log.d("ServerCommunication", "ServerCommunication onPostExecute ServerAsycTask: "+urls);
-		//Toast.makeText(myContext, "1- "+url, Toast.LENGTH_LONG).show();
-
-		new ServerAsycTask(remoteViews,url).execute(url);
+		
+		new ServerAsycTask(remoteViews, widId).execute(url);
 		//new ServerAsycTask().execute(url);
 	}
 
 	private class ServerAsycTask extends AsyncTask<String, Void, String> {
 
 		private RemoteViews views;
-		String url;
+		
+		int widId;
 
-		public ServerAsycTask(RemoteViews views, String url){
+		public ServerAsycTask(RemoteViews views, int widId){
 			this.views = views;
-			this.url = url;
+			this.widId = widId;
 		}
 
 		protected String doInBackground(String... urls){
@@ -226,21 +199,21 @@ startActivity(intent);
 			//Log.d("ServerCommunication", "ServerCommunication onPostExecute ServerAsycTask: "+result);
 
 
-			//Toast.makeText(myContext, "result1: "+result+" for url: "+this.url, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(myContext, "widId: "+this.widId+" for url: "+this.url, Toast.LENGTH_SHORT).show();
 
 			try {
 				JSONObject obj = new JSONObject(result);
 				String str = "1 "+obj.getString("from")+" = "+obj.getString("rate")+" "+obj.getString("to");
 				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
 
-				ComponentName watchWidget;
+				//ComponentName watchWidget;
 
-				watchWidget = new ComponentName(myContext, MainActivity.class);
+				//watchWidget = new ComponentName(myContext, MainActivity.class);
 
 				views.setTextViewText(R.id.update, str);
 
-				//appWidgetManager.updateAppWidget(appWidgetId, views);
-				appWidgetManager.updateAppWidget(watchWidget, views);
+				appWidgetManager.updateAppWidget(this.widId, views);
+				//appWidgetManager.updateAppWidget(watchWidget, views);
 
 			} catch (Exception e) {
 				e.printStackTrace();

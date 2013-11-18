@@ -82,14 +82,11 @@ public class Profile_View extends Activity {
 	
 	public void updateUserProfile(View view){
 		
-		SharedPreferences.Editor prefs = getSharedPreferences("currency", 0).edit();
+		SharedPreferences.Editor prefs = getSharedPreferences(""+widgetId, -99).edit();
         prefs.putString("from", fromSpinner.getSelectedItem().toString());
         prefs.putString("to", toSpinner.getSelectedItem().toString());
 		prefs.commit();
 				 
-		
-		
-		
 		 Intent resultValue = new Intent();
 		 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 		 setResult(RESULT_OK, resultValue);
