@@ -13,8 +13,8 @@
 
         <Button
             android:id="@+id/copyBtn"
-            android:layout_width="56dp"
-            android:layout_height="70dp"
+            android:layout_width="46dp"
+            android:layout_height="180dp"
             android:layout_margin="5dp"
             android:background="@drawable/newxlabs"
             android:text="" />
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/update"
             android:layout_alignParentBottom="true"
-            android:text="Last updated: 26-11-2013 14:30"
+            android:text="Last updated: Not updated yet"
             android:textColor="@color/white"
             android:textSize="11sp" />
 
