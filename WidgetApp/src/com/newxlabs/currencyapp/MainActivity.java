@@ -30,13 +30,13 @@ public class MainActivity extends AppWidgetProvider {
 	private static final String SHARE_CLICKED    = "automaticWidgetShareButtonClick";
 	public Context myContext;
 	public Intent myIntent;
-	
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		
+
 		//SharedPreferences.Editor prefs = context.getSharedPreferences("data", Context.MODE_WORLD_WRITEABLE).edit();
 
 		ComponentName thisWidget = new ComponentName(context, MainActivity.class);
@@ -58,24 +58,24 @@ public class MainActivity extends AppWidgetProvider {
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent, 0);
-			
+
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent2);
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
 			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
-			
+
 			//getLatestData(remoteViews,"USD", "INR");
 
 			//copy button
-			
+
 			//**************
 			/*Intent clickIntent = new Intent(context, MainActivity.class);
 			clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
-			*///***************
-			
-			
+			 *///***************
+
+
 
 
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -92,7 +92,7 @@ public class MainActivity extends AppWidgetProvider {
 
 		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -99);
 		Toast.makeText(context, "onReceive- "+widId, Toast.LENGTH_SHORT).show();
-		
+
 		RemoteViews remoteViews;
 		//ComponentName watchWidget;
 
@@ -101,12 +101,12 @@ public class MainActivity extends AppWidgetProvider {
 		myIntent = intent;
 
 		//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
-		
+
 		SharedPreferences prefs = context.getSharedPreferences(""+widId, -99);
-        String from = prefs.getString("from","USD");
-        String to = prefs.getString("to","INR");
+		String from = prefs.getString("from","USD");
+		String to = prefs.getString("to","INR");
 		getLatestData(remoteViews,from, to,widId);
-		
+
 		/*
 		if (COPY_CLICKED.equals(intent.getAction())) {
 
@@ -122,18 +122,18 @@ public class MainActivity extends AppWidgetProvider {
 
 			//appWidgetManager.updateAppWidget(watchWidget, remoteViews);
 
-			
+
 			myContext = context;
 			myIntent = intent;
 
 			Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
-			
+
 			SharedPreferences prefs = context.getSharedPreferences("currency", 0);
             String from = prefs.getString("from","USD");
             String to = prefs.getString("to","INR");
 			getLatestData(remoteViews,from, to);
 		}
-		*/
+		 */
 	}
 
 	protected PendingIntent getPendingSelfIntent(Context context, String action) {
@@ -145,17 +145,13 @@ public class MainActivity extends AppWidgetProvider {
 
 	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
-		 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
-		//ComponentName thisWidget = new ComponentName(myContext, MainActivity.class);
-
-	    //appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
-	    
-	    remoteViews.setTextViewText(R.id.update, "Fetching data...");
-	    appWidgetManager.updateAppWidget(widId, remoteViews);
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
+		remoteViews.setTextViewText(R.id.update, "Fetching data...");
+		appWidgetManager.updateAppWidget(widId, remoteViews);
 		//appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
-		
+
 		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-		
+
 		new ServerAsycTask(remoteViews, widId).execute(url);
 		//new ServerAsycTask().execute(url);
 	}
@@ -163,7 +159,7 @@ public class MainActivity extends AppWidgetProvider {
 	private class ServerAsycTask extends AsyncTask<String, Void, String> {
 
 		private RemoteViews views;
-		
+
 		int widId;
 
 		public ServerAsycTask(RemoteViews views, int widId){
