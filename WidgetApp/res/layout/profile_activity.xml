@@ -4,15 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/black" >
 
-    <Button
-        android:id="@+id/updateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="142dp"
-        android:onClick="updateUserProfile"
-        android:text="Create" />
-
     <Spinner
         android:id="@+id/toSpinner"
         android:layout_width="fill_parent"
@@ -36,5 +27,56 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1" />
+
+    <TextView
+        android:id="@+id/main_result"
+        style="@android:style/TextAppearance.Large"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="@string/progress_start"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/conf_seek"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_result"
+        android:layout_alignParentLeft="true"
+        android:max="1440"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/main_result"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="@string/warning_time" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/conf_seek"
+        android:layout_centerHorizontal="true"
+        android:text="Currency Update Interval"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:onClick="updateUserProfile"
+        android:text="Create" />
 
 </RelativeLayout>
