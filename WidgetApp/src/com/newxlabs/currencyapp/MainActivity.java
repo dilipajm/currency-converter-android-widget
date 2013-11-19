@@ -44,12 +44,15 @@ public class MainActivity extends AppWidgetProvider {
 
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
+		
+		
 		for(int widgetId : allWidgetIds){
 
 			//int number = (new Random().nextInt(thoughtsArray.length));
 
 
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.activity_main);
+				
 			//remoteViews.setTextViewText(R.id.update, String.valueOf(number));
 			//remoteViews.setTextViewText(R.id.update, "Loading..");
 
@@ -84,7 +87,21 @@ public class MainActivity extends AppWidgetProvider {
 
 			//prefs.putString("thought", thoughtsArray[number]);
 			//prefs.commit();
+			
+			myContext = context;
+			myIntent = intent;
+
+			//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
 		}
+		
+		/*
+		//30 mins update
+		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		SharedPreferences prefs = context.getSharedPreferences(""+widId, AppWidgetManager.INVALID_APPWIDGET_ID);
+		String from = prefs.getString("from","USD");
+		String to = prefs.getString("to","INR");
+		getLatestData(remoteViews,from, to,widId);
+		*/
 	}
 
 	@Override
