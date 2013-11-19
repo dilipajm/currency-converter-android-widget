@@ -48,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/main_result"
         android:layout_alignParentLeft="true"
-        android:max="1440"
-        android:progress="0" />
+        android:max="120"
+        android:progress="15" />
 
     <TextView
         android:id="@+id/textView3"

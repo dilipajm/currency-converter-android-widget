@@ -3,13 +3,14 @@ package com.newxlabs.currencyapp;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -17,10 +18,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.format.DateFormat;
-import android.webkit.WebView.FindListener;
-import android.widget.ProgressBar;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -29,6 +30,12 @@ public class MainActivity extends AppWidgetProvider {
 
 	private static final String COPY_CLICKED    = "automaticWidgetCopyButtonClick";
 	private static final String SHARE_CLICKED    = "automaticWidgetShareButtonClick";
+	public static final String UPDATE_ONE = "com.newxlabs.currencyapp.UPDATE_ONE_WIDGET";
+	/**
+	 * We need the exact Uri instance to identify the Intent.
+	 */
+	private static HashMap<Integer, Uri> uris = new HashMap<Integer, Uri>();
+
 	public Context myContext;
 	public Intent myIntent;
 
@@ -44,15 +51,15 @@ public class MainActivity extends AppWidgetProvider {
 
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-		
-		
+
+
 		for(int widgetId : allWidgetIds){
 
 			//int number = (new Random().nextInt(thoughtsArray.length));
 
 
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.activity_main);
-				
+
 			//remoteViews.setTextViewText(R.id.update, String.valueOf(number));
 			//remoteViews.setTextViewText(R.id.update, "Loading..");
 
@@ -87,13 +94,13 @@ public class MainActivity extends AppWidgetProvider {
 
 			//prefs.putString("thought", thoughtsArray[number]);
 			//prefs.commit();
-			
+
 			myContext = context;
 			myIntent = intent;
 
 			//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
 		}
-		
+
 		/*
 		//30 mins update
 		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -101,7 +108,7 @@ public class MainActivity extends AppWidgetProvider {
 		String from = prefs.getString("from","USD");
 		String to = prefs.getString("to","INR");
 		getLatestData(remoteViews,from, to,widId);
-		*/
+		 */
 	}
 
 	@Override
@@ -109,7 +116,7 @@ public class MainActivity extends AppWidgetProvider {
 		// TODO Auto-generated method stub
 		super.onReceive(context, intent);
 
-		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -99);
+		int widId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		//Toast.makeText(context, "onReceive- "+widId, Toast.LENGTH_SHORT).show();
 
 		RemoteViews remoteViews;
@@ -121,7 +128,7 @@ public class MainActivity extends AppWidgetProvider {
 
 		//Toast.makeText(context, "Its just take few seconds to update.", Toast.LENGTH_SHORT).show();
 
-		SharedPreferences prefs = context.getSharedPreferences(""+widId, -99);
+		SharedPreferences prefs = context.getSharedPreferences(""+widId, AppWidgetManager.INVALID_APPWIDGET_ID);
 		String from = prefs.getString("from","USD");
 		String to = prefs.getString("to","INR");
 		getLatestData(remoteViews,from, to,widId);
@@ -161,7 +168,39 @@ public class MainActivity extends AppWidgetProvider {
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}
 
+	/**
+	 * Each time an instance is removed, we cancel the associated AlarmManager.
+	 */
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds)
+	{
+		super.onDeleted(context, appWidgetIds);
+		for (int appWidgetId : appWidgetIds)
+		{
+			cancelAlarmManager(context, appWidgetId);
+		}
+	}
 
+	protected void cancelAlarmManager(Context context, int widgetID)
+	{
+		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		Intent intentUpdate = new Intent(context, MainActivity.class);
+		//AlarmManager are identified with Intent's Action and Uri.
+		intentUpdate.setAction(MainActivity.UPDATE_ONE);
+		//Don't put the uri to cancel all the AlarmManager with action UPDATE_ONE.
+		intentUpdate.setData(uris.get(widgetID));
+		intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+		PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(context,
+				0,
+				intentUpdate,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.cancel(pendingIntentAlarm);
+		Log.d("cancelAlarmManager", "Cancelled Alarm. Action = " +
+				MainActivity.UPDATE_ONE +
+				" URI = " + uris.get(widgetID));
+		uris.remove(widgetID);
+	}
+	
 	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
@@ -173,6 +212,11 @@ public class MainActivity extends AppWidgetProvider {
 
 		new ServerAsycTask(remoteViews, widId).execute(url);
 		//new ServerAsycTask().execute(url);
+	}
+
+	public static void addUri(int id, Uri uri)
+	{
+		uris.put(Integer.valueOf(id), uri);
 	}
 
 	private class ServerAsycTask extends AsyncTask<String, Void, String> {
@@ -228,7 +272,7 @@ public class MainActivity extends AppWidgetProvider {
 				String date = (DateFormat.format("dd-MM-yyyy hh:mm:ss", new java.util.Date()).toString());
 				views.setTextViewText(R.id.update, str);
 				views.setTextViewText(R.id.lastUpdated, "Last Updated: "+date);
-				
+
 				appWidgetManager.updateAppWidget(this.widId, views);
 				//appWidgetManager.updateAppWidget(watchWidget, views);
 
