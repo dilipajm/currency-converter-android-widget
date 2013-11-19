@@ -8,12 +8,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RemoteViews;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 public class Profile_View extends Activity {
@@ -24,6 +27,8 @@ public class Profile_View extends Activity {
 	
 	private Profile_View context;
 	private int widgetId;
+	private int minutes;
+	
 	AppWidgetManager widgetManager;
 	RemoteViews views;
 	
@@ -36,6 +41,8 @@ public class Profile_View extends Activity {
 		setResult(RESULT_CANCELED);
 		
 		context = this;
+		
+		minutes = 15;
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
@@ -77,6 +84,27 @@ public class Profile_View extends Activity {
         fromSpinner.setSelection(0);
         toSpinner.setSelection(1);
         
+        
+        final TextView mainResult = (TextView)findViewById(R.id.main_result);
+        
+        final SeekBar seekBar = (SeekBar)findViewById(R.id.conf_seek);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+           {
+           public void onStopTrackingTouch(SeekBar seekBar)
+              {}
+              
+           public void onStartTrackingTouch(SeekBar seekBar)
+              {}
+              
+           public void onProgressChanged(SeekBar seekBar,
+                                         int progress,
+                                         boolean fromUser)
+              {
+              //From 1 sec to 60 sec = (from 0 sec to 59 sec) + 1 sec.
+              minutes = progress+1;
+              mainResult.setText(minutes + " minutes");
+              }
+           });
         
 	}
 	

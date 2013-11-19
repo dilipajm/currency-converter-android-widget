@@ -61,15 +61,6 @@
         android:padding="3dp"
         android:text="@string/warning_time" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/conf_seek"
-        android:layout_centerHorizontal="true"
-        android:text="Currency Update Interval"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <Button
         android:id="@+id/updateBtn"
         android:layout_width="wrap_content"
@@ -78,5 +69,14 @@
         android:layout_centerHorizontal="true"
         android:onClick="updateUserProfile"
         android:text="Create" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/conf_seek"
+        android:layout_centerHorizontal="true"
+        android:text="Currency Update Interval"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
