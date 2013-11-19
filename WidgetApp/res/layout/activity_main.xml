@@ -39,6 +39,13 @@
             android:textColor="@color/white"
             android:textSize="11sp" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/copyBtn"
+            android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 
 </RelativeLayout>

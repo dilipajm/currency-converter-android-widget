@@ -3,7 +3,7 @@
     android:minWidth="272dp" 
     android:minHeight="56dp" 
     android:initialLayout="@layout/activity_main"
-android:configure="com.newxlabs.currencyapp.Profile_View" android:updatePeriodMillis="1800000">
+android:configure="com.newxlabs.currencyapp.Profile_View">
     
 
 </appwidget-provider>

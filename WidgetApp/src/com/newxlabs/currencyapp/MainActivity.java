@@ -22,6 +22,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppWidgetProvider {
 
 	public Context myContext;
 	public Intent myIntent;
+	ProgressBar progressBar;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -86,10 +89,10 @@ public class MainActivity extends AppWidgetProvider {
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
 			 *///***************
+ 
 
 
-
-
+			remoteViews.setViewVisibility(R.id.progressBar, View.GONE);
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
 
 			//prefs.putString("thought", thoughtsArray[number]);
@@ -204,10 +207,15 @@ public class MainActivity extends AppWidgetProvider {
 	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
-		remoteViews.setTextViewText(R.id.update, "Fetching data...");
+		
+		
+		//remoteViews.setTextViewText(R.id.update, "Fetching data...");
+		remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
 		appWidgetManager.updateAppWidget(widId, remoteViews);
 		//appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 
+		
+		
 		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
 
 		new ServerAsycTask(remoteViews, widId).execute(url);
@@ -273,6 +281,8 @@ public class MainActivity extends AppWidgetProvider {
 				views.setTextViewText(R.id.update, str);
 				views.setTextViewText(R.id.lastUpdated, "Last Updated: "+date);
 
+				views.setViewVisibility(R.id.progressBar, View.GONE);
+				
 				appWidgetManager.updateAppWidget(this.widId, views);
 				//appWidgetManager.updateAppWidget(watchWidget, views);
 
