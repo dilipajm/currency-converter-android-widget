@@ -105,7 +105,7 @@ public class Profile_View extends Activity {
 			{
 				//From 1 sec to 60 sec = (from 0 sec to 59 sec) + 1 sec.
 						minutes = progress+1;
-				mainResult.setText(minutes + " minutes");
+				mainResult.setText(minutes + " minute(s)");
 			}
 		});
 

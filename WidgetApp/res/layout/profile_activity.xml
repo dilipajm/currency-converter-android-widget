@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/conf_seek"
         android:layout_centerHorizontal="true"
-        android:text="Currency Update Interval"
+        android:text="Set Refresh Interval"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
