@@ -20,6 +20,8 @@ import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class Profile_View extends Activity {
@@ -34,7 +36,11 @@ public class Profile_View extends Activity {
 
 	AppWidgetManager widgetManager;
 	RemoteViews views;
+	private ToggleButton toggleButton;
 
+	SeekBar seekBar;
+	TextView mainResult;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,6 +51,10 @@ public class Profile_View extends Activity {
 
 		context = this;
 
+		toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+		seekBar = (SeekBar) findViewById(R.id.conf_seek);
+		mainResult = (TextView) findViewById(R.id.main_result);
+		
 		minutes = 15;
 
 		Bundle extras = getIntent().getExtras();
@@ -104,13 +114,28 @@ public class Profile_View extends Activity {
 					boolean fromUser)
 			{
 				//From 1 sec to 60 sec = (from 0 sec to 59 sec) + 1 sec.
-						minutes = progress+1;
+				minutes = progress+1;
 				mainResult.setText(minutes + " minute(s)");
 			}
 		});
-
 	}
 
+	public void toggleClicked(View view){
+		
+		String switchText = toggleButton.getText().toString();
+
+		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
+			//Toast.makeText(context, "Auto Refresh - ON", Toast.LENGTH_SHORT).show();
+			
+			seekBar.setEnabled(true);
+			mainResult.setEnabled(true);
+		}
+		else{
+			//Toast.makeText(context, "Auto Refresh - OFF", Toast.LENGTH_SHORT).show();
+			seekBar.setEnabled(false);
+			mainResult.setEnabled(false);
+		}
+	}
 	public void updateUserProfile(View view){
 
 		SharedPreferences.Editor prefs = getSharedPreferences(""+widgetId, AppWidgetManager.INVALID_APPWIDGET_ID).edit();
@@ -118,42 +143,50 @@ public class Profile_View extends Activity {
 		prefs.putString("to", toSpinner.getSelectedItem().toString());
 		prefs.commit();
 
-		/*
-		 Intent resultValue = new Intent();
-		 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-		 setResult(RESULT_OK, resultValue);
-		 finish();
-		 */
-		//widgetManager.updateAppWidget(widgetId, views);
+		String switchText = toggleButton.getText().toString();
 
-		//Create and launch the AlarmManager.
-		//N.B.:
-		//Use a different action than the first update to have more reliable results.
-		//Use explicit intents to have more reliable results.
-		Uri.Builder build = new Uri.Builder();
-		build.appendPath(""+widgetId);
-		Uri uri = build.build();
-		Intent intentUpdate = new Intent(context, MainActivity.class);
-		intentUpdate.setAction(MainActivity.UPDATE_ONE);//Set an action anyway to filter it in onReceive()
-		intentUpdate.setData(uri);//One Alarm per instance.
-		//We will need the exact instance to identify the intent.
-		MainActivity.addUri(widgetId, uri);
-		intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-		PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(Profile_View.this,
-				0,
-				intentUpdate,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		//If you want one global AlarmManager for all instances, put this alarmManger as
-		//static and create it only the first time.
-		//Then pass in the Intent all the ids and do not put the Uri.
-		AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis()+(minutes*60*1000),
-				(minutes*60*1000),
-				pendingIntentAlarm);
-		Log.d("Ok Button", "Created Alarm. Action = " + MainActivity.UPDATE_ONE +
-				" URI = " + build.build().toString() +
-				" Minutes = " + minutes*60);
+		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
+			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+minutes+" minutes", Toast.LENGTH_LONG).show();
+			/*
+			 Intent resultValue = new Intent();
+			 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+			 setResult(RESULT_OK, resultValue);
+			 finish();
+			 */
+			//widgetManager.updateAppWidget(widgetId, views);
+
+			//Create and launch the AlarmManager.
+			//N.B.:
+			//Use a different action than the first update to have more reliable results.
+			//Use explicit intents to have more reliable results.
+			Uri.Builder build = new Uri.Builder();
+			build.appendPath(""+widgetId);
+			Uri uri = build.build();
+			Intent intentUpdate = new Intent(context, MainActivity.class);
+			intentUpdate.setAction(MainActivity.UPDATE_ONE);//Set an action anyway to filter it in onReceive()
+			intentUpdate.setData(uri);//One Alarm per instance.
+			//We will need the exact instance to identify the intent.
+			MainActivity.addUri(widgetId, uri);
+			intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+			PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(Profile_View.this,
+					0,
+					intentUpdate,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+			//If you want one global AlarmManager for all instances, put this alarmManger as
+			//static and create it only the first time.
+			//Then pass in the Intent all the ids and do not put the Uri.
+			AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+					System.currentTimeMillis()+(minutes*60*1000),
+					(minutes*60*1000),
+					pendingIntentAlarm);
+			Log.d("Ok Button", "Created Alarm. Action = " + MainActivity.UPDATE_ONE +
+					" URI = " + build.build().toString() +
+					" Minutes = " + minutes*60);
+		}
+		else{
+			Toast.makeText(context, "Auto Refresh Disabled.\nTap to refresh it manually.", Toast.LENGTH_LONG).show();			
+		}
 
 		//Return the original widget ID, found in onCreate().
 		Intent resultValue = new Intent();
