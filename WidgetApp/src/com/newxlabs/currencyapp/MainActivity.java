@@ -74,11 +74,14 @@ public class MainActivity extends AppWidgetProvider {
 
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent, 0);
 
-			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			//PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent2);
 			remoteViews.setOnClickPendingIntent(R.id.lastUpdated, pendingIntent2);
+			remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent2);
+			remoteViews.setOnClickPendingIntent(R.id.rel1, pendingIntent2);
+			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
 			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
-			remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
+			//remoteViews.setOnClickPendingIntent(R.id.copyBtn, getPendingSelfIntent(context, COPY_CLICKED));
 
 			//getLatestData(remoteViews,"USD", "INR");
 
