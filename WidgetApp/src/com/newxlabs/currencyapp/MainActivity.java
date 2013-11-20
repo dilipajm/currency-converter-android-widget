@@ -41,7 +41,8 @@ public class MainActivity extends AppWidgetProvider {
 	public Context myContext;
 	public Intent myIntent;
 	ProgressBar progressBar;
-
+	
+	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
@@ -93,6 +94,7 @@ public class MainActivity extends AppWidgetProvider {
 
 
 			remoteViews.setViewVisibility(R.id.progressBar, View.GONE);
+			remoteViews.setViewVisibility(R.id.copyBtn, View.VISIBLE);
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
 
 			//prefs.putString("thought", thoughtsArray[number]);
@@ -211,6 +213,7 @@ public class MainActivity extends AppWidgetProvider {
 		
 		//remoteViews.setTextViewText(R.id.update, "Fetching data...");
 		remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
+		remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
 		appWidgetManager.updateAppWidget(widId, remoteViews);
 		//appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 
@@ -282,6 +285,7 @@ public class MainActivity extends AppWidgetProvider {
 				views.setTextViewText(R.id.lastUpdated, "Last Updated: "+date);
 
 				views.setViewVisibility(R.id.progressBar, View.GONE);
+				views.setViewVisibility(R.id.copyBtn, View.VISIBLE);
 				
 				appWidgetManager.updateAppWidget(this.widId, views);
 				//appWidgetManager.updateAppWidget(watchWidget, views);
