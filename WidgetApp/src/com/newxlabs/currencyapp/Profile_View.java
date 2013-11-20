@@ -146,7 +146,7 @@ public class Profile_View extends Activity {
 		String switchText = toggleButton.getText().toString();
 
 		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
-			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+minutes+" minutes", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+minutes+" minute(s)", Toast.LENGTH_LONG).show();
 			/*
 			 Intent resultValue = new Intent();
 			 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);

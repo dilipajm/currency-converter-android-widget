@@ -229,14 +229,26 @@ public class MainActivity extends AppWidgetProvider {
 			Toast.makeText(myContext, "Check your internet connectivity.", Toast.LENGTH_LONG).show();
 		}*/
 		
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
 		
-		remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
-		remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
-		appWidgetManager.updateAppWidget(widId, remoteViews);
+		ConnectionDetector cd = new ConnectionDetector(myContext);
 
-		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-		new ServerAsycTask(remoteViews, widId).execute(url);
+		// Check if Internet present
+		if (!cd.isConnectingToInternet()) {
+			Toast.makeText(myContext, "Check your internet connectivity.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		else{
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
+			
+			remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
+			appWidgetManager.updateAppWidget(widId, remoteViews);
+
+			String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
+			new ServerAsycTask(remoteViews, widId).execute(url);			
+		}
+		
+		
 	}
 	
 	public static boolean isNetworkAvailable(Context context) 
