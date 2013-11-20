@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -18,6 +21,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.format.DateFormat;
@@ -211,22 +215,34 @@ public class MainActivity extends AppWidgetProvider {
 	
 	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
+		/*if(isNetworkAvailable(myContext)){
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
+			
+			remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
+			appWidgetManager.updateAppWidget(widId, remoteViews);
+
+			String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
+			new ServerAsycTask(remoteViews, widId).execute(url);			
+		}
+		else{
+			Toast.makeText(myContext, "Check your internet connectivity.", Toast.LENGTH_LONG).show();
+		}*/
+		
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
 		
-		
-		//remoteViews.setTextViewText(R.id.update, "Fetching data...");
 		remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
 		remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
 		appWidgetManager.updateAppWidget(widId, remoteViews);
-		//appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(thisWidget), remoteViews);
 
-		
-		
 		String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-
 		new ServerAsycTask(remoteViews, widId).execute(url);
-		//new ServerAsycTask().execute(url);
 	}
+	
+	public static boolean isNetworkAvailable(Context context) 
+    {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+    }
 
 	public static void addUri(int id, Uri uri)
 	{
