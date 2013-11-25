@@ -45,8 +45,8 @@ public class MainActivity extends AppWidgetProvider {
 	public Context myContext;
 	public Intent myIntent;
 	ProgressBar progressBar;
-	
-	
+
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
@@ -97,9 +97,9 @@ public class MainActivity extends AppWidgetProvider {
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.copyBtn, pendingIntent2);
 			 *///***************
- 
 
 
+			remoteViews.setViewVisibility(R.id.noNet, View.GONE);
 			remoteViews.setViewVisibility(R.id.progressBar, View.GONE);
 			remoteViews.setViewVisibility(R.id.copyBtn, View.VISIBLE);
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -186,6 +186,7 @@ public class MainActivity extends AppWidgetProvider {
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds)
 	{
+		//Toast.makeText(context, "Deletion...widget", Toast.LENGTH_LONG).show();
 		super.onDeleted(context, appWidgetIds);
 		for (int appWidgetId : appWidgetIds)
 		{
@@ -195,6 +196,7 @@ public class MainActivity extends AppWidgetProvider {
 
 	protected void cancelAlarmManager(Context context, int widgetID)
 	{
+		//Toast.makeText(context, "cancelAlarmManager...widget- "+widgetID, Toast.LENGTH_LONG).show();
 		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		Intent intentUpdate = new Intent(context, MainActivity.class);
 		//AlarmManager are identified with Intent's Action and Uri.
@@ -212,12 +214,12 @@ public class MainActivity extends AppWidgetProvider {
 				" URI = " + uris.get(widgetID));
 		uris.remove(widgetID);
 	}
-	
+
 	public void getLatestData(RemoteViews remoteViews,String from, String to, int widId){
 
 		/*if(isNetworkAvailable(myContext)){
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
-			
+
 			remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
 			remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
 			appWidgetManager.updateAppWidget(widId, remoteViews);
@@ -228,18 +230,27 @@ public class MainActivity extends AppWidgetProvider {
 		else{
 			Toast.makeText(myContext, "Check your internet connectivity.", Toast.LENGTH_LONG).show();
 		}*/
-		
-		
+
+
 		ConnectionDetector cd = new ConnectionDetector(myContext);
 
 		// Check if Internet present
 		if (!cd.isConnectingToInternet()) {
-			Toast.makeText(myContext, "Check your internet connectivity.", Toast.LENGTH_SHORT).show();
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
+
+			remoteViews.setViewVisibility(R.id.noNet, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.progressBar, View.GONE);
+			remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
+			//remoteViews.setTextViewText(R.id.lastUpdated, "Last Updated: Not Connected");
+			appWidgetManager.updateAppWidget(widId, remoteViews);
+			
+			//Toast.makeText(myContext, "Check your internet connectivity - "+widId, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		else{
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(myContext);
-			
+
+			remoteViews.setViewVisibility(R.id.noNet, View.GONE);
 			remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE);
 			remoteViews.setViewVisibility(R.id.copyBtn, View.INVISIBLE);
 			appWidgetManager.updateAppWidget(widId, remoteViews);
@@ -247,14 +258,14 @@ public class MainActivity extends AppWidgetProvider {
 			String url = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
 			new ServerAsycTask(remoteViews, widId).execute(url);			
 		}
-		
-		
+
+
 	}
-	
+
 	public static boolean isNetworkAvailable(Context context) 
-    {
-        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
-    }
+	{
+		return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+	}
 
 	public static void addUri(int id, Uri uri)
 	{
@@ -315,9 +326,10 @@ public class MainActivity extends AppWidgetProvider {
 				views.setTextViewText(R.id.update, str);
 				views.setTextViewText(R.id.lastUpdated, "Last Updated: "+date);
 
+				views.setViewVisibility(R.id.noNet, View.GONE);
 				views.setViewVisibility(R.id.progressBar, View.GONE);
 				views.setViewVisibility(R.id.copyBtn, View.VISIBLE);
-				
+
 				appWidgetManager.updateAppWidget(this.widId, views);
 				//appWidgetManager.updateAppWidget(watchWidget, views);
 
