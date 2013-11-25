@@ -26,13 +26,13 @@ import android.widget.ToggleButton;
 
 public class Profile_View extends Activity {
 
-	private Spinner fromSpinner, toSpinner;
+	private Spinner fromSpinner, toSpinner, timeSpinner;
 
 	Button updateBtn;
 
 	private Profile_View context;
 	private int widgetId;
-	private int minutes;
+	private int count;
 
 	AppWidgetManager widgetManager;
 	RemoteViews views;
@@ -40,7 +40,7 @@ public class Profile_View extends Activity {
 
 	SeekBar seekBar;
 	TextView mainResult;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,11 +51,11 @@ public class Profile_View extends Activity {
 
 		context = this;
 
-		toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+		//toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
 		seekBar = (SeekBar) findViewById(R.id.conf_seek);
 		mainResult = (TextView) findViewById(R.id.main_result);
-		
-		minutes = 15;
+
+		count = 15;
 
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
@@ -71,6 +71,9 @@ public class Profile_View extends Activity {
 
 		toSpinner = (Spinner)findViewById(R.id.toSpinner);
 		toSpinner.setPrompt("From");
+
+		timeSpinner = (Spinner)findViewById(R.id.timeSpinner);
+		timeSpinner.setPrompt("Minutes");
 
 		updateBtn = (Button) findViewById(R.id.updateBtn);
 
@@ -98,6 +101,19 @@ public class Profile_View extends Activity {
 		toSpinner.setSelection(1);
 
 
+		// Spinner Drop down TIME elements
+		List<String> timesList = new ArrayList<String>();
+		timesList.add("seconds");
+		timesList.add("minutes");
+		timesList.add("hours");
+		timesList.add("days");
+
+		ArrayAdapter<String> timesDataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, timesList);
+		timesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		timeSpinner.setAdapter(timesDataAdapter);
+		timeSpinner.setSelection(1);
+
+
 		final TextView mainResult = (TextView)findViewById(R.id.main_result);
 
 		final SeekBar seekBar = (SeekBar)findViewById(R.id.conf_seek);
@@ -114,19 +130,19 @@ public class Profile_View extends Activity {
 					boolean fromUser)
 			{
 				//From 1 sec to 60 sec = (from 0 sec to 59 sec) + 1 sec.
-				minutes = progress+1;
-				mainResult.setText(minutes + " minute(s)");
+				count = progress+1;
+				mainResult.setText(count+" "+timeSpinner.getSelectedItem().toString());
 			}
 		});
 	}
-
+/*
 	public void toggleClicked(View view){
-		
+
 		String switchText = toggleButton.getText().toString();
 
 		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
 			//Toast.makeText(context, "Auto Refresh - ON", Toast.LENGTH_SHORT).show();
-			
+
 			seekBar.setEnabled(true);
 			mainResult.setEnabled(true);
 		}
@@ -135,7 +151,7 @@ public class Profile_View extends Activity {
 			seekBar.setEnabled(false);
 			mainResult.setEnabled(false);
 		}
-	}
+	}*/
 	public void updateUserProfile(View view){
 
 		SharedPreferences.Editor prefs = getSharedPreferences(""+widgetId, AppWidgetManager.INVALID_APPWIDGET_ID).edit();
@@ -146,7 +162,7 @@ public class Profile_View extends Activity {
 		String switchText = toggleButton.getText().toString();
 
 		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
-			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+minutes+" minute(s)", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+count+" minute(s)", Toast.LENGTH_LONG).show();
 			/*
 			 Intent resultValue = new Intent();
 			 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -177,12 +193,12 @@ public class Profile_View extends Activity {
 			//Then pass in the Intent all the ids and do not put the Uri.
 			AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-					System.currentTimeMillis()+(minutes*60*1000),
-					(minutes*60*1000),
+					System.currentTimeMillis()+(count*60*1000),
+					(count*60*1000),
 					pendingIntentAlarm);
 			Log.d("Ok Button", "Created Alarm. Action = " + MainActivity.UPDATE_ONE +
 					" URI = " + build.build().toString() +
-					" Minutes = " + minutes*60);
+					" Minutes = " + count*60);
 		}
 		else{
 			Toast.makeText(context, "Auto Refresh Disabled.\nTap to refresh it manually.", Toast.LENGTH_LONG).show();			
