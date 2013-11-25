@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/toSpinner"
-                android:layout_toRightOf="@+id/updateBtn" />
+                android:layout_toRightOf="@+id/refreshText" />
 
             <TextView
                 android:id="@+id/versionTxt"
@@ -109,33 +109,17 @@
                 android:text="v1.5"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <Button
-                android:id="@+id/kaydeeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/forTxt"
-                android:layout_centerHorizontal="true"
-                android:text="Kaydee Forex Pvt. Ltd."
-                android:onClick="kaydeeClicked" />
-
-            <TextView
-                android:id="@+id/forTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/newxBtn"
-                android:layout_centerHorizontal="true"
-                android:text="For"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Button
-                android:id="@+id/newxBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/updateBtn"
-                android:layout_centerHorizontal="true"
-                android:text="By NewXLabs Technologies"
-                android:onClick="newxlabsClicked"/>
         </RelativeLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="By NewXLabs Technologies For Kaydeeforex Pvt. Ltd"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="12sp" />
 
 </RelativeLayout>
