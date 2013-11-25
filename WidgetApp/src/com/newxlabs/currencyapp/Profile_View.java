@@ -28,6 +28,11 @@ import android.widget.Toast;
 
 public class Profile_View extends Activity {
 
+	public static String kSECONDS = "seconds";
+	public static String kMINUTES = "minutes";
+	public static String kHOURS = "hours";
+	public static String kDAYS = "days";
+	
 	private Spinner fromSpinner, toSpinner, timeSpinner;
 
 	Button updateBtn;
@@ -107,10 +112,10 @@ public class Profile_View extends Activity {
 
 		// Spinner Drop down TIME elements
 		List<String> timesList = new ArrayList<String>();
-		timesList.add("seconds");
-		timesList.add("minutes");
-		timesList.add("hours");
-		timesList.add("days");
+		timesList.add(kSECONDS);
+		timesList.add(kMINUTES);
+		timesList.add(kHOURS);
+		timesList.add(kDAYS);
 
 		ArrayAdapter<String> timesDataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, timesList);
 		timesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -180,7 +185,6 @@ public class Profile_View extends Activity {
 
 		//if(switchText.equalsIgnoreCase("on"))
 		{ //if on then create alarm manager
-			Toast.makeText(context, "The currency will update in every "+count+" "+timeSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 			/*
 			 Intent resultValue = new Intent();
 			 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -193,6 +197,24 @@ public class Profile_View extends Activity {
 			//N.B.:
 			//Use a different action than the first update to have more reliable results.
 			//Use explicit intents to have more reliable results.
+			
+			String getTimeFrame = timeSpinner.getSelectedItem().toString();
+			int realTimeInSeconds = count * 60 * 1000;
+			if(getTimeFrame.equalsIgnoreCase(kSECONDS)){
+				realTimeInSeconds = count * 1000;
+			}
+			else if(getTimeFrame.equalsIgnoreCase(kMINUTES)){
+				realTimeInSeconds = count * 60 * 1000;
+			}
+			else if(getTimeFrame.equalsIgnoreCase(kHOURS)){
+				realTimeInSeconds = count * 60 * 60 * 1000;
+			}
+			else{ //days
+				realTimeInSeconds = count * 60 * 60 * 24 * 1000;
+			}
+			//Toast.makeText(context, "The currency will update in every "+count+" "+timeSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "RealTImeIn Milliseconds:- "+realTimeInSeconds, Toast.LENGTH_LONG).show();
+			
 			Uri.Builder build = new Uri.Builder();
 			build.appendPath(""+widgetId);
 			Uri uri = build.build();
@@ -211,12 +233,10 @@ public class Profile_View extends Activity {
 			//Then pass in the Intent all the ids and do not put the Uri.
 			AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-					System.currentTimeMillis()+(count*60*1000),
-					(count*60*1000),
+					System.currentTimeMillis()+(realTimeInSeconds),
+					(realTimeInSeconds),
 					pendingIntentAlarm);
-			Log.d("Ok Button", "Created Alarm. Action = " + MainActivity.UPDATE_ONE +
-					" URI = " + build.build().toString() +
-					" Minutes = " + count*60);
+			//Log.d("Ok Button", "Created Alarm. Action = " + MainActivity.UPDATE_ONE +" URI = " + build.build().toString() +" Minutes = " + count*60);
 		}
 		/*else{
 			Toast.makeText(context, "Auto Refresh Disabled.\nTap to refresh it manually.", Toast.LENGTH_LONG).show();			

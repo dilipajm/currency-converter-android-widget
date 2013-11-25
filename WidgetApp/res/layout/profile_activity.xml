@@ -4,109 +4,112 @@
     android:layout_height="match_parent"
     android:background="@color/black" >
 
-    <Spinner
-        android:id="@+id/toSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/fromSpinner"
-        android:layout_marginTop="19dp" />
-
-    <TextView
-        android:id="@+id/textView1"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Select Currencies"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_height="wrap_content" >
 
-    <Spinner
-        android:id="@+id/fromSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black" >
 
-    <SeekBar
-        android:id="@+id/conf_seek"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/timeSpinner"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"
-        android:max="120"
-        android:progress="15" />
+            <Spinner
+                android:id="@+id/toSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/fromSpinner"
+                android:layout_marginTop="19dp" />
 
-    <Button
-        android:id="@+id/updateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:onClick="updateUserProfile"
-        android:text="Create" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Select Currencies"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/main_result"
-        style="@android:style/TextAppearance.Large"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/conf_seek"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:padding="3dp"
-        android:text="@string/progress_start"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/fromSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView1" />
 
-    <TextView
-        android:id="@+id/versionTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="v1.4"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            <SeekBar
+                android:id="@+id/conf_seek"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/timeSpinner"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="0dp"
+                android:max="120"
+                android:progress="15" />
 
-    <TextView
-        android:id="@+id/copyrightTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:autoLink="web"
-        android:text="http://www.newxlabs.com" />
+            <Button
+                android:id="@+id/updateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true"
+                android:onClick="updateUserProfile"
+                android:text="Create" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/main_result"
-        android:gravity="center"
-        android:padding="3dp"
-        android:text="@string/warning_time" />
+            <TextView
+                android:id="@+id/main_result"
+                style="@android:style/TextAppearance.Large"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/conf_seek"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/progress_start"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/refreshText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toSpinner"
-        android:layout_margin="10dp"
-        android:layout_marginTop="21dp"
-        android:text="Set Auto Refresh Interval"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="16sp" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/main_result"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/warning_time" />
 
-    <Spinner
-        android:id="@+id/timeSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toSpinner"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/updateBtn" />
+            <TextView
+                android:id="@+id/refreshText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toSpinner"
+                android:layout_margin="10dp"
+                android:layout_marginTop="21dp"
+                android:text="Set Auto Refresh Interval"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/timeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/toSpinner"
+                android:layout_toRightOf="@+id/updateBtn" />
+
+            <TextView
+                android:id="@+id/versionTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView1"
+                android:layout_alignParentRight="true"
+                android:text="v1.4"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
