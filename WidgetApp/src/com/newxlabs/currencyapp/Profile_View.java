@@ -32,7 +32,7 @@ public class Profile_View extends Activity {
 	public static String kMINUTES = "minutes";
 	public static String kHOURS = "hours";
 	public static String kDAYS = "days";
-	
+
 	private Spinner fromSpinner, toSpinner, timeSpinner;
 
 	Button updateBtn;
@@ -86,7 +86,7 @@ public class Profile_View extends Activity {
 
 		final TextView mainResult = (TextView)findViewById(R.id.main_result);
 		final SeekBar seekBar = (SeekBar)findViewById(R.id.conf_seek);
-		
+
 		// Spinner click listener
 		//fromSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
 
@@ -124,7 +124,7 @@ public class Profile_View extends Activity {
 
 		//setOnItemSelectedListener(new OnItemSelectedListener() {
 		timeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			
+
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
@@ -134,7 +134,7 @@ public class Profile_View extends Activity {
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -157,7 +157,7 @@ public class Profile_View extends Activity {
 			}
 		});
 	}
-/*
+	/*
 	public void toggleClicked(View view){
 
 		String switchText = toggleButton.getText().toString();
@@ -197,7 +197,7 @@ public class Profile_View extends Activity {
 			//N.B.:
 			//Use a different action than the first update to have more reliable results.
 			//Use explicit intents to have more reliable results.
-			
+
 			String getTimeFrame = timeSpinner.getSelectedItem().toString();
 			int realTimeInSeconds = count * 60 * 1000;
 			if(getTimeFrame.equalsIgnoreCase(kSECONDS)){
@@ -212,9 +212,9 @@ public class Profile_View extends Activity {
 			else{ //days
 				realTimeInSeconds = count * 60 * 60 * 24 * 1000;
 			}
-			//Toast.makeText(context, "The currency will update in every "+count+" "+timeSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-			Toast.makeText(context, "RealTImeIn Milliseconds:- "+realTimeInSeconds, Toast.LENGTH_LONG).show();
-			
+			Toast.makeText(context, "The currency will update in every "+count+" "+timeSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(context, "RealTImeIn Milliseconds:- "+realTimeInSeconds, Toast.LENGTH_LONG).show();
+
 			Uri.Builder build = new Uri.Builder();
 			build.appendPath(""+widgetId);
 			Uri uri = build.build();
@@ -249,4 +249,14 @@ public class Profile_View extends Activity {
 		finish();
 	}
 
+	public void newxlabsClicked(View view){
+
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.newxlabs.com"));
+		startActivity(browserIntent);
+	}
+
+	public void kaydeeClicked(View view){
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.kaydeeforex.in"));
+		startActivity(browserIntent);
+	}
 }

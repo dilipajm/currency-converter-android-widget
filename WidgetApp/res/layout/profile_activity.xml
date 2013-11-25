@@ -55,7 +55,7 @@
                 android:layout_below="@+id/textView3"
                 android:layout_centerHorizontal="true"
                 android:onClick="updateUserProfile"
-                android:text="Create" />
+                android:text="Create Converter" />
 
             <TextView
                 android:id="@+id/main_result"
@@ -106,9 +106,35 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/textView1"
                 android:layout_alignParentRight="true"
-                android:text="v1.4"
+                android:text="v1.5"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
+            <Button
+                android:id="@+id/kaydeeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forTxt"
+                android:layout_centerHorizontal="true"
+                android:text="Kaydee Forex Pvt. Ltd."
+                android:onClick="kaydeeClicked" />
+
+            <TextView
+                android:id="@+id/forTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/newxBtn"
+                android:layout_centerHorizontal="true"
+                android:text="For"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/newxBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/updateBtn"
+                android:layout_centerHorizontal="true"
+                android:text="By NewXLabs Technologies"
+                android:onClick="newxlabsClicked"/>
         </RelativeLayout>
     </ScrollView>
 
