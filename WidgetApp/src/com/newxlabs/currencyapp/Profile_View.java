@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RemoteViews;
@@ -21,7 +23,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+//import android.widget.ToggleButton;
 
 
 public class Profile_View extends Activity {
@@ -36,7 +38,7 @@ public class Profile_View extends Activity {
 
 	AppWidgetManager widgetManager;
 	RemoteViews views;
-	private ToggleButton toggleButton;
+	//private ToggleButton toggleButton;
 
 	SeekBar seekBar;
 	TextView mainResult;
@@ -77,7 +79,9 @@ public class Profile_View extends Activity {
 
 		updateBtn = (Button) findViewById(R.id.updateBtn);
 
-
+		final TextView mainResult = (TextView)findViewById(R.id.main_result);
+		final SeekBar seekBar = (SeekBar)findViewById(R.id.conf_seek);
+		
 		// Spinner click listener
 		//fromSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
 
@@ -113,10 +117,23 @@ public class Profile_View extends Activity {
 		timeSpinner.setAdapter(timesDataAdapter);
 		timeSpinner.setSelection(1);
 
+		//setOnItemSelectedListener(new OnItemSelectedListener() {
+		timeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				mainResult.setText(count+" "+timeSpinner.getSelectedItem().toString());
+			}
 
-		final TextView mainResult = (TextView)findViewById(R.id.main_result);
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
-		final SeekBar seekBar = (SeekBar)findViewById(R.id.conf_seek);
+
 		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			public void onStopTrackingTouch(SeekBar seekBar)
@@ -159,10 +176,11 @@ public class Profile_View extends Activity {
 		prefs.putString("to", toSpinner.getSelectedItem().toString());
 		prefs.commit();
 
-		String switchText = toggleButton.getText().toString();
+		//String switchText = toggleButton.getText().toString();
 
-		if(switchText.equalsIgnoreCase("on")){ //if on then create alarm manager
-			Toast.makeText(context, "Auto Refresh Enabled.\nThe currency will update in every "+count+" minute(s)", Toast.LENGTH_LONG).show();
+		//if(switchText.equalsIgnoreCase("on"))
+		{ //if on then create alarm manager
+			Toast.makeText(context, "The currency will update in every "+count+" "+timeSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 			/*
 			 Intent resultValue = new Intent();
 			 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -200,9 +218,9 @@ public class Profile_View extends Activity {
 					" URI = " + build.build().toString() +
 					" Minutes = " + count*60);
 		}
-		else{
+		/*else{
 			Toast.makeText(context, "Auto Refresh Disabled.\nTap to refresh it manually.", Toast.LENGTH_LONG).show();			
-		}
+		}*/
 
 		//Return the original widget ID, found in onCreate().
 		Intent resultValue = new Intent();
