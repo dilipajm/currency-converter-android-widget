@@ -118,8 +118,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="By NewXLabs Technologies For Kaydeeforex Pvt. Ltd"
+        android:text="By http://NewXLabs.com For http://Kaydeeforex.in"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="12sp" />
+        android:textSize="13sp"
+        android:autoLink="web" />
 
 </RelativeLayout>
